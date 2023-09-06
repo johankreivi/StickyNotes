@@ -7,15 +7,17 @@ using Newtonsoft.Json.Converters;
 using Notes.Api.AccessControl;
 using Notes.Api.Configuration;
 using Notes.Api.Database;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuration for Logging below, for file logging add something like Serilog.
-builder.Host.ConfigureLogging(hostingContext =>
-{
-    hostingContext.ClearProviders();
-    hostingContext.AddConsole();
-});
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/mylog.txt")
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 builder.Services
     .ConfigureSecrets(builder.Configuration)
