@@ -15,4 +15,4 @@ obj/
 Notes.Api/notes.db
 Notes.Api/notes.db-shm
 Notes.Api/notes.db-wal
-/Notes.Api/Logs/mylog.txt
+/Notes.Api/Logs/*

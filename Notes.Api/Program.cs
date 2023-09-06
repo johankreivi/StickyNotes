@@ -11,7 +11,7 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuration for Logging below, for file logging add something like Serilog.
+// Configuration for Logging below with Serilog.
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File("Logs/mylog.txt")
