@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Notes.Api.AccessControl;
 using Notes.Api.Database;
 using Notes.Api.Models;
+using Serilog.Core;
 
 [Authorize]
 [ApiController]
@@ -15,10 +17,12 @@ using Notes.Api.Models;
 public class NotesController : ControllerBase
 {
     private readonly NotesDb _database;
+    private readonly ILogger<NotesController> _logger;
 
-    public NotesController(NotesDb database)
+    public NotesController(NotesDb database, ILogger<NotesController> logger)
     {
         _database = database;
+        _logger = logger;
     }
 
     /// <summary>
@@ -73,17 +77,20 @@ public class NotesController : ControllerBase
     public ActionResult<Note> Get([FromRoute] int noteId)
     {
         var note = _database.Notes.Find(noteId);
+
         var authorizationHeader = Request.Headers["Authorization"];
         var user = BasicAuthenticationHandler.GetUserFrom(authorizationHeader);
-        if (note.Author != user.Username)
-        {
-            // TODO: Add logging?
-            return Forbid("You can't access this note!");
-        }
 
         if (note == null)
         {
+            _logger.LogWarning("User: {Username} is trying to retrive a non existing note!", user.Username);
             return NotFound($"Note with noteId {noteId} not found");
+        }
+
+        if (note.Author != user.Username)
+        {
+            _logger.LogWarning("Unauthorized access attempt by {Username}", user.Username);
+            return Forbid("You can't access this note!");
         }
 
         return Ok(note);
