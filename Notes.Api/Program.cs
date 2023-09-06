@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Notes.Api.AccessControl;
@@ -7,6 +9,13 @@ using Notes.Api.Configuration;
 using Notes.Api.Database;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configuration for Logging below, for file logging add something like Serilog.
+builder.Host.ConfigureLogging(hostingContext =>
+{
+    hostingContext.ClearProviders();
+    hostingContext.AddConsole();
+});
 
 builder.Services
     .ConfigureSecrets(builder.Configuration)

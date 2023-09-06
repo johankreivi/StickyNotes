@@ -46,6 +46,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
     {
         if (!Request.Headers.ContainsKey("Authorization"))
         {
+            Logger.LogWarning("Missing Authorization Header");
             return AuthenticateResult.Fail("Missing Authorization Header");
         }
 
@@ -53,12 +54,14 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         var authorizationUser = GetUserFrom(authorizationHeader);
         if (authorizationUser == null)
         {
+            Logger.LogError("Invalid Authorization Header");
             return AuthenticateResult.Fail("Invalid Authorization Header");
         }
 
         var storedUser = await _database.Users.FindAsync(authorizationUser.Username);
         if (storedUser == null || storedUser.Password != authorizationUser.Password)
         {
+            Logger.LogError($"Invalid Username or Password for user {authorizationUser.Username}");
             return AuthenticateResult.Fail("Invalid Username or Password");
         }
 
