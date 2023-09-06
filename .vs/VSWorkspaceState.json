@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Notes.Client",
+    "\\StyleCop"
   ],
-  "SelectedNode": "\\C:\\Users\\sejk20892it3\\source\\repos\\ITSecurity\\StickyNotes",
+  "SelectedNode": "\\Notes.Api",
   "PreviewInSolutionExplorer": false
 }
