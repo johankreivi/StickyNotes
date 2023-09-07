@@ -3,6 +3,7 @@
 
 # VS user settings
 *.sln
+.vs
 
 # .NET Core build output
 bin/
