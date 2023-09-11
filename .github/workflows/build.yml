@@ -2,7 +2,7 @@ name: SonarCloud
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -43,6 +43,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"tuc-it-security_stickysonar" /o:"tuc-it-security" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build ..\..\Notes.Api\Notes.Api.sln
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"0h4y_StickyNotes" /o:"0h4y" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
